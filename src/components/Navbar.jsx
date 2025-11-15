@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, ChevronDown } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, Routes , Route } from "react-router-dom";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false); // mobile menu
@@ -133,6 +133,7 @@ export default function Navbar() {
             </div>
 
             <Link to="/signin" className="px-4 py-2 bg-blue-600 text-white rounded-full hover:opacity-95 transition">Sign In</Link>
+              
           </div>
 
           {/* Mobile menu button */}
