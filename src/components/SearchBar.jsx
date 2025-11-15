@@ -11,6 +11,7 @@ export default function SearchBar() {
 
     const token = localStorage.getItem("token");
     if (!token) {
+      alert('You’ve been logged out. Please sign in again to continue.')
       navigate("/signin");
       return;
     }
