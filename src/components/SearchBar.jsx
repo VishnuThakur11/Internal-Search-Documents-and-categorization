@@ -15,7 +15,7 @@ export default function SearchBar() {
       navigate("/signin");
       return;
     }
-
+    console.log(token)
     console.log("Search:", query);
   };
 
