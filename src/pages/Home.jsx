@@ -1,6 +1,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import SearchBar from "../components/SearchBar";
 
 export default function Home() {
   return (
@@ -28,7 +29,7 @@ export default function Home() {
         </motion.p>
 
         {/* Search bar mock */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 26 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35, duration: 0.7 }}
@@ -41,7 +42,9 @@ export default function Home() {
               className="bg-transparent w-full outline-none text-black placeholder-gray-500 text-sm sm:text-base"
             />
           </div>
-        </motion.div>
+        </motion.div> */}
+
+        <SearchBar />
       </section>
 
       {/* ===== Features Section ===== */}
