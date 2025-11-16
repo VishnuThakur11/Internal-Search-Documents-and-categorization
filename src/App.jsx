@@ -6,6 +6,7 @@ import SignIn from './auth/Signin'
 import SignUp from './auth/SignUp'
 import Dashboard from './components/Dashboard'
 import { AuthProvider } from './auth/AuthContext'
+import RecentFiles from './pages/RecentFiles'
 const App = () => {
   return (
     <>
@@ -18,6 +19,7 @@ const App = () => {
         <Route path='/signin' element={<SignIn />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/recentfiles' element={<RecentFiles />} />
       </Routes>
 </AuthProvider>
       </BrowserRouter>

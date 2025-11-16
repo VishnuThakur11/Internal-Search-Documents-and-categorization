@@ -1,22 +1,40 @@
 import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import SearchBar from "../components/SearchBar";
+import axios from "axios";
+import { UPLOAD_API } from "../config/api";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
-  // File upload reference
   const fileInputRef = useRef(null);
 
   const handleFileUploadClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+    fileInputRef.current?.click();
   };
 
-  const handleFileSelected = (e) => {
+  const handleFileSelected = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      console.log("Selected file:", file);
-      // Upload logic will go here later
+    if (!file) return;
+
+    console.log("Selected file:", file);
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("userId", "12345"); // TODO: Replace with AuthContext user.id
+    formData.append("category", "General");
+
+    try {
+      const res = await axios.post(UPLOAD_API, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      });
+
+      console.log("Uploaded:", res.data);
+      alert("File uploaded successfully!");
+
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Upload failed.");
     }
   };
 
@@ -74,15 +92,15 @@ export default function Dashboard() {
           My Favorites
         </motion.div>
 
-        <motion.div
+        <Link to="/recentfiles"><motion.div
           whileHover={{ scale: 1.03 }}
           className="bg-white border border-gray-200 shadow-sm rounded-xl p-4 cursor-pointer text-center font-medium"
         >
           Recent Files
-        </motion.div>
+        </motion.div></Link>
       </div>
 
-      {/* Categories Section (RESTORED) */}
+      {/* Categories */}
       <div className="mt-12">
         <h2 className="text-xl font-semibold mb-3">Browse Categories</h2>
 
@@ -90,7 +108,7 @@ export default function Dashboard() {
           {[
             { title: "Marketing Documents", count: 128 },
             { title: "Design Assets", count: 64 },
-            { title: "Product Docs", count: 42 }
+            { title: "Product Docs", count: 42 },
           ].map((cat) => (
             <motion.div
               key={cat.title}
@@ -104,7 +122,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Statistics Section (RESTORED) */}
+      {/* Stats */}
       <div className="mt-12">
         <h2 className="text-xl font-semibold mb-3">Your Stats</h2>
 
@@ -112,7 +130,7 @@ export default function Dashboard() {
           {[
             { label: "Files Uploaded", value: 24 },
             { label: "Searches Made", value: 317 },
-            { label: "Favorites", value: 12 }
+            { label: "Favorites", value: 12 },
           ].map((stat) => (
             <motion.div
               key={stat.label}

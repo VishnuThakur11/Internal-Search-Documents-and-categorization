@@ -1,6 +1,11 @@
-import React, { useState } from "react";
+
+
+import { useState, useContext } from "react";
 import { motion } from "framer-motion";
 import { NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../auth/AuthContext";
+// import USER_API_ENDPOINT from "../config/api.js"
+import { USER_API_ENDPOINT } from "../config/api";
 
 function SignUp() {
   const [name, setName] = useState("");
@@ -10,7 +15,9 @@ function SignUp() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const { login } = useContext(AuthContext);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -18,13 +25,26 @@ function SignUp() {
       return;
     }
 
-    // Simulate signup: store user in localStorage (frontend only)
-    const newUser = { name, email, password };
-    localStorage.setItem("demoUser", JSON.stringify(newUser));
+    try {
+      const res = await fetch(`${USER_API_ENDPOINT}/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-    setError("");
-    alert("Signup successful! You can now sign in.");
-    navigate("/signin");
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "Signup failed");
+      } else {
+        login(data.token); // update navbar state
+        setError("");
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Network error. Please try again.");
+    }
   };
 
   return (
@@ -47,7 +67,6 @@ function SignUp() {
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter your name"
               className="w-full px-4 py-3 border rounded-xl bg-white text-black border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
-              required
             />
           </div>
 
@@ -59,7 +78,6 @@ function SignUp() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               className="w-full px-4 py-3 border rounded-xl bg-white text-black border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
-              required
             />
           </div>
 
@@ -71,19 +89,17 @@ function SignUp() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               className="w-full px-4 py-3 border rounded-xl bg-white text-black border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
-              required
             />
           </div>
 
           <div>
-            <label className="block mb-1 text-sm font-medium text-black">Re-enter Password</label>
+            <label className="block mb-1 text-sm font-medium text-black">Confirm Password</label>
             <input
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Re-enter your password"
               className="w-full px-4 py-3 border rounded-xl bg-white text-black border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
-              required
             />
           </div>
 
@@ -99,7 +115,7 @@ function SignUp() {
           <p className="text-center text-sm text-gray-600 mt-4">
             Already have an account?{" "}
             <NavLink to="/signin" className="text-blue-600 font-semibold hover:underline">
-              Sign In
+              Sign in
             </NavLink>
           </p>
         </form>

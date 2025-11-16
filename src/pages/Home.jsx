@@ -2,7 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import SearchBar from "../components/SearchBar";
-
+import { Link } from "react-router-dom";
 export default function Home() {
   return (
     <div className="min-h-screen w-full bg-white text-black pt-24">
@@ -27,22 +27,6 @@ export default function Home() {
           A smart internal search tool that understands documents, assets, and teams.
           Search across PDFs, Slides, Figma, Docs, and more — all in one place.
         </motion.p>
-
-        {/* Search bar mock */}
-        {/* <motion.div
-          initial={{ opacity: 0, y: 26 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.7 }}
-          className="mt-10 flex justify-center"
-        >
-          <div className="backdrop-blur-xl bg-gray-100/80 border border-gray-300 w-full md:w-2/3 lg:w-1/2 rounded-full px-6 py-4 shadow-md">
-            <input
-              aria-label="Search"
-              placeholder="Search your documents, campaigns, assets..."
-              className="bg-transparent w-full outline-none text-black placeholder-gray-500 text-sm sm:text-base"
-            />
-          </div>
-        </motion.div> */}
 
         <SearchBar />
       </section>
@@ -95,7 +79,7 @@ export default function Home() {
           Deploy a search experience that surfaces the right content, when your team needs it.
         </motion.p>
 
-        <motion.button
+        <Link to="/signup"><motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
@@ -103,6 +87,7 @@ export default function Home() {
         >
           Get Started
         </motion.button>
+        </Link>
       </section>
     </div>
   );
